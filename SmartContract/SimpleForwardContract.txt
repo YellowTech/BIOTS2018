@@ -1,0 +1,91 @@
+pragma solidity ^0.4.9;
+
+import "./BiotsToken.sol";
+
+contract SimpleForward is ERC223Token{
+    
+    //our company which created the fitness app, the admin
+    address public administration;
+    uint index;
+    uint prevTestTime;
+    
+    //consturtor
+    function SimpleForward() public{
+        administration = msg.sender;
+        index = 0;
+        prevTestTime = now;
+    }
+  
+    struct Participant {
+      uint fitnessScore;
+      //these data could be accessed with oraclize; possible more data
+      //uint basalMetabolicRate;
+      //uint caloriesBurned;
+      uint steps;
+      uint prevSteps;
+      uint prevTime;
+      uint prevDif;
+    }
+    
+    //stores a "Participant" struct for each possible address
+    mapping(address => Participant) public participants;
+    
+    // map ID to address 
+    mapping (uint => address) public participantsIndex;
+    /*
+    //calculate fitnessScore according to some criteria
+    function calculateFitnessScore(address participant) public {
+        //could be done without paying less gas with oraclize (if time to implement)
+        //possibly other, more complex formula (if time to implement)
+        //participants[participant].fitnessScore = participants[participant].caloriesBurned / participants[participant].basalMetabolicRate;
+        participants[participant].fitnessScore = participants[participant].steps;
+    }
+    */
+    
+    //TODO: we need the admin to call testFitnessScore regularly automatically in all cases
+    //in the best case once at the same time every week, could maybe work with some event
+    //event WeekPassed();
+  
+    //new participant is added to the programm
+    function createNewParticipant(address participant) public {
+          require((msg.sender == administration));
+          participantsIndex[index++] = participant;
+          balances[participant] = 1000000000000000000; //10^18
+          totalSupply += 1000000000000000000;
+          collectData(participant);
+    }
+  
+  
+    //administration tests the fitness score of each participant
+    function testFitnessScore() public {
+        //huge parts could be done with oraclize to make calculations less expensive
+        //require((now - prevTestTime) / 1 days > 6);//at least around one week passed
+        require(msg.sender == administration);
+        for(uint i = 0; i < index; i++){
+            collectData(participantsIndex[i]);
+            if(participants[participantsIndex[i]].fitnessScore > 1000){
+                transfer(participantsIndex[i], (participants[participantsIndex[i]].fitnessScore-1000)*1000*participants[participantsIndex[i]].prevDif , 'x', "0");
+            }else{
+                transfer(administration, (1000-participants[participantsIndex[i]].fitnessScore)*1000*participants[participantsIndex[i]].prevDif, 'x', "0");
+            }
+        }
+        prevTestTime = now;
+    }
+    
+    //collecting data from the participants
+    function collectData(address participant) public {
+        participants[participant].prevSteps = participants[participant].steps;
+        //alternatively collecting data with oraclize
+        participants[participant].steps = participants[participant].steps + 1007;
+        uint minutesPassed = (now - participants[participant].prevTime)/(1 minutes);
+        participants[participant].prevTime = now;
+        uint stepsMade = participants[participant].steps - participants[participant].prevSteps;
+        if(minutesPassed == 0){
+            minutesPassed++;
+        }
+        participants[participant].prevDif = minutesPassed;
+        participants[participant].fitnessScore = stepsMade / minutesPassed;
+    }
+  
+  
+}
