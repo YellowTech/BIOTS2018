@@ -1,0 +1,40 @@
+{\rtf1\ansi\ansicpg1252\cocoartf1561\cocoasubrtf100
+{\fonttbl\f0\fswiss\fcharset0 Helvetica;}
+{\colortbl;\red255\green255\blue255;}
+{\*\expandedcolortbl;;}
+\paperw11900\paperh16840\margl1440\margr1440\vieww10800\viewh8400\viewkind0
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+
+\f0\fs24 \cf0 pragma solidity ^0.4.9;\
+\
+ /*\
+ * Contract that is working with ERC223 tokens\
+ */\
+ \
+ contract ContractReceiver \{\
+     \
+    struct TKN \{\
+        address sender;\
+        uint value;\
+        bytes data;\
+        bytes4 sig;\
+    \}\
+    \
+    \
+    function tokenFallback(address _from, uint _value, bytes _data) public pure \{\
+      TKN memory tkn;\
+      tkn.sender = _from;\
+      tkn.value = _value;\
+      tkn.data = _data;\
+      uint32 u = uint32(_data[3]) + (uint32(_data[2]) << 8) + (uint32(_data[1]) << 16) + (uint32(_data[0]) << 24);\
+      tkn.sig = bytes4(u);\
+      \
+      /* tkn variable is analogue of msg variable of Ether transaction\
+      *  tkn.sender is person who initiated this token transaction   (analogue of msg.sender)\
+      *  tkn.value the number of tokens that were sent   (analogue of msg.value)\
+      *  tkn.data is data of token transaction   (analogue of msg.data)\
+      *  tkn.sig is 4 bytes signature of function\
+      *  if data of token transaction is a function execution\
+      */\
+    \}\
+\}}
