@@ -2,11 +2,7 @@ pragma solidity ^0.4.9;
 
 import "./BiotsToken.sol";
 
- /**
- * by Dexaran
- *
- * https://github.com/Dexaran/ERC223-token-standard
- */
+
 
 contract SimpleForward is ERC223Token{
     
