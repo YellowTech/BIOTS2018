@@ -2,11 +2,7 @@ pragma solidity ^0.4.9;
 
  /* New ERC23 contract interface */
  
-   /**
- * by Dexaran
- *
- * https://github.com/Dexaran/ERC223-token-standard
- */
+
  
 contract ERC223 {
   uint public totalSupply;

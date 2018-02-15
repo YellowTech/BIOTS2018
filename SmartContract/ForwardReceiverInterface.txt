@@ -4,11 +4,7 @@ pragma solidity ^0.4.9;
  * Contract that is working with ERC223 tokens
  */
  
-  /**
- * by Dexaran
- *
- * https://github.com/Dexaran/ERC223-token-standard
- */
+
  
  contract ContractReceiver {
      

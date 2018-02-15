@@ -9,7 +9,7 @@ import "./ForwardInterface.sol";
  * https://github.com/Dexaran/ERC223-token-standard
  */
  
- //Added some own code
+ //Basically completely (also ForwardInterface and ForwardReceiverInterface) implemented by Dexaran. We have added some marginal own parts though.
  
  
  /* https://github.com/LykkeCity/EthereumApiDotNetCore/blob/master/src/ContractBuilder/contracts/token/SafeMath.sol */
