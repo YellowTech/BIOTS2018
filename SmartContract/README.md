@@ -1,4 +1,4 @@
-#Token and Smart Contract implementation in solidity
+# Token and Smart Contract implementation in solidity
 
 This is a part of a project done for the
 [Blockchain and Iot course](http://biots.org/)
