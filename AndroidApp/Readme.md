@@ -1,1 +1,1 @@
-
+This is the folder for the Android App a more simple SmartContract which we used since we experiences unexpected problems using the original one. Main features are full use of Blockchain technology and simple Token obtaining and sharing. All Interactions are directly connected with a Testnet of the ethereum network.
