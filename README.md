@@ -1,5 +1,6 @@
 # BIOTS2018 - FORWARD
 
+![alt text](https://raw.githubusercontent.com/ETHBiots2018/FORWARD/f-token.png)
 
 Welcome everyone to the github repository!
 
